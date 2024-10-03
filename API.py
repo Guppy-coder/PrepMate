@@ -25,13 +25,13 @@ with  microphone as source:
     proficiency = recognizer.recognize_google(audio)
     print(proficiency)
 
-    audio = recognizer.listen(source)
     print("Please state your field of study")
+    audio = recognizer.listen(source)
     field_of_study = recognizer.recognize_google(audio)
     print(field_of_study)
 
-    audio = recognizer.listen(source)
     print("Please state the type of interview")
+    audio = recognizer.listen(source)
     type_of_interview = recognizer.recognize_google(audio)
     print(type_of_interview)
 
