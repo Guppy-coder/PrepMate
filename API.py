@@ -3,61 +3,100 @@ import os
 import time
 import speech_recognition as sr
 from gtts import gTTS
-from pydub import AudioSegment
 
 
 api_key = os.getenv('GENAI_API_KEY')
-if not api_key:
-    raise ValueError("API key not found. Please set the GENAI_API_KEY environment variable.")
-
-genai.configure(api_key=os.environ['GENAI_API_KEY'])
- 
 model = genai.GenerativeModel("gemini-1.5-flash")
-response = model.generate_content("You are an iterviewer. You are interviewing a candidate for a job. The candidate is a software engineer. please evalute their performance.")
-# print(response.text)
 
-while not response.text:
-    time.sleep(1)
+def generate_questions():
+    response = model.generate_content("You are an iterviewer. You are interviewing a candidate for a job. The candidate is a software engineer. please evalute their performance. Give 5 questions")
 
-proficiency = "Intermediate"
-field_of_study = "Computer Science"
-type_of_interview = "Behavioral"
+    while not response.text:
+        time.sleep(1)
 
-model.generate_content("At the end give me an overall impression of the candidate's performance")
+    proficiency = "Intermediate"
+    field_of_study = "Computer Science"
+    type_of_interview = "Behavioral"
 
-response = model.generate_content("1. " + field_of_study + "\n2. " + type_of_interview + " Interview Questions" + "\n3. " + proficiency + " Candidate")
-print(response.text)
+    model.generate_content("At the end give me an overall impression of the candidate's performance")
 
-questions = response.text.split("* **")
-# print(questions)
+    response = model.generate_content("1. " + field_of_study + "\n2. " + type_of_interview + " Interview Questions" + "\n3. " + proficiency + " Candidate")
 
-candidate_answers = {}
+    questions = response.text.split("* **")
 
-for question in questions:
+    return questions
+
+def text_to_speech(text):
+    tts = gTTS(text, lang='en')
+    tts.save("question.mp3")
+    os.system("start question.mp3")
+
+def speech_to_text():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
-    if question.startswith("**") or question.startswith("##"):
-        continue
     with mic as source:
-        # print(question)
-        tts = gTTS(question, lang='en')
-        tts.save("question.mp3")
-        os.system("mpg123 question.mp3")
+        audio = recognizer.listen(source)
+        answer = recognizer.recognize_google(audio)
+        return answer
+    
+def generate_candidate_answers(questions):
+    candidate_answers = {}
+    for question in questions:
+        if question.startswith("**") or question.startswith("##"):
+            continue
+        text_to_speech(question)
+        time.sleep(20)
+        answer = speech_to_text()
 
-        audio_file = AudioSegment.from_file("/home/wethinkcode_/student_work/personal_prodj/PrepMate-1/question.mp3")
-        audio_duration = len(audio_file) / 1000
-        try:
-            # time.sleep(audio_duration)
-            print("Listening...")
-            audio = recognizer.listen(source)
-            answer = recognizer.recognize_google(audio)
-            candidate_answers[question] = answer
-            print(candidate_answers) 
-        except sr.UnknownValueError:
-            comp = "Sorry, I did not get that"
-            tts = gTTS(comp, lang='en')
-            tts.save("comp.mp3")
-            os.system("mpg123 comp.mp3")
-            print(candidate_answers) 
+        if check_if_question(answer):
+            answer = answer_question(answer)
+            text_to_speech(answer)
 
-print(candidate_answers)
+        if check_for_follow_up(answer):
+            follow_up_question = generate_follow_up_question(answer)
+            text_to_speech(follow_up_question)
+            time.sleep(20)
+            follow_up_answer = speech_to_text()
+            candidate_answers[question] = (answer, follow_up_answer)
+        candidate_answers[question] = answer
+    return candidate_answers
+
+def evaluate_candidate():
+    questions = generate_questions()
+    candidate_answers = generate_candidate_answers(questions)
+    return candidate_answers
+
+def generate_follow_up_question(answer):
+    response = model.generate_content("based on this answer, what would be a good follow up question?: " + answer)
+    return response.text
+
+def evaluate_candidate():
+    questions = generate_questions()
+    candidate_answers = generate_candidate_answers(questions)
+    follow_up_questions = {}
+    for question, answer in candidate_answers.items():
+        follow_up_question = generate_follow_up_question(answer)
+        follow_up_questions[question] = follow_up_question
+    return candidate_answers, follow_up_questions
+
+def check_for_follow_up(answer):
+    response = model.generate_content("Is there a follow up question to ask based on this answer?: " + answer)
+    return response.text
+
+def check_if_question(answer):
+    response = model.generate_content("Is this a question? answer yes or no: " + answer)
+    if response.text.lower() == "yes":
+        return True 
+    return False
+
+def answer_question(answer):
+    response = model.generate_content("Answer the question: " + answer)
+    return response.text
+
+def main():
+    candidate_answers, follow_up_questions = evaluate_candidate()
+    print("Candidate Answers: ", candidate_answers)
+    print("Follow Up Questions: ", follow_up_questions)
+
+if __name__ == "__main__":
+    main()
