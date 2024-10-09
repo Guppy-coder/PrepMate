@@ -67,6 +67,7 @@ def evaluate_candidate():
     return candidate_answers
 
 def generate_follow_up_question(answer):
+    print("Generating follow up question for: ", answer)
     response = model.generate_content("based on this answer, what would be a good follow up question?: " + answer)
     return response.text
 
@@ -80,10 +81,13 @@ def evaluate_candidate():
     return candidate_answers, follow_up_questions
 
 def check_for_follow_up(answer):
-    response = model.generate_content("Is there a follow up question to ask based on this answer?: " + answer)
-    return response.text
+    if len(answer.split()) > 20:
+        response = model.generate_content("Please generate a follow up question for this answer: " + answer)
+        return response.text
+    return False
 
 def check_if_question(answer):
+    print("Checking if question: ", answer)
     response = model.generate_content("Is this a question? answer yes or no: " + answer)
     if response.text.lower() == "yes":
         return True 
