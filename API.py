@@ -9,7 +9,7 @@ api_key = os.getenv('GENAI_API_KEY')
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def generate_questions():
-    response = model.generate_content("You are an iterviewer. You are interviewing a candidate for a job. The candidate is a software engineer. please evalute their performance. Give 5 questions")
+    response = model.generate_content("You are an iterviewer. You are interviewing a candidate for a job. The candidate is a software engineer. please evalute their performance.")
 
     while not response.text:
         time.sleep(1)
@@ -34,10 +34,16 @@ def text_to_speech(text):
 def speech_to_text():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
-    with mic as source:
-        audio = recognizer.listen(source)
-        answer = recognizer.recognize_google(audio)
-        return answer
+    try:
+        print("Listening...")
+        with mic as source:
+            recognizer.adjust_for_ambient_noise(source, duration=0.5)
+            audio = recognizer.listen(source)
+            answer = recognizer.recognize_google(audio)
+            return answer
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+        recognizer.listen(source)
     
 def generate_candidate_answers(questions):
     candidate_answers = {}
@@ -90,7 +96,7 @@ def check_if_question(answer):
     print("Checking if question: ", answer)
     response = model.generate_content("Is this a question? answer yes or no: " + answer)
     if response.text.lower() == "yes":
-        return True 
+        return True
     return False
 
 def answer_question(answer):
@@ -98,9 +104,12 @@ def answer_question(answer):
     return response.text
 
 def main():
-    candidate_answers, follow_up_questions = evaluate_candidate()
-    print("Candidate Answers: ", candidate_answers)
-    print("Follow Up Questions: ", follow_up_questions)
+    start_time = time.time()
+    time_limit = 600
+    while time.time() - start_time < time_limit:
+        candidate_answers, follow_up_questions = evaluate_candidate()
+        print("Candidate Answers: ", candidate_answers)
+        print("Follow Up Questions: ", follow_up_questions)
 
 if __name__ == "__main__":
     main()
