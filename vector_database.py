@@ -3,7 +3,7 @@ from cassandra.auth import PlainTextAuthProvider
 
 import json
 
-from langchain.llms import openai
+
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.indexes.vectorstore import VectorStoreIndexWrapper
 from langchain.vectorstores.cassandra import Cassandra
@@ -19,6 +19,7 @@ api_key = os.getenv('OPEN_AI_API_KEY')
 # if yours is different update the file name below
 myCasandraVStore = None
 def connect_to_db():
+    print("connecting to database")
     cloud_config= {
     'secure_connect_bundle': 'secure-connect-prep-mate-db.zip'
     }
@@ -37,6 +38,7 @@ def connect_to_db():
     return session
 
 def create_table(table_name):
+    print("creating table")
     embeddings = OpenAIEmbeddings(open_ai_key=api_key)
     myCasandraVStore=Cassandra(
         embeddings=embeddings,
