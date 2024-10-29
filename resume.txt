@@ -1,0 +1,39 @@
+Tshegofatso Sekgothe Curriculum Vitae
+588 Mogamisi Street, Protea North, P.O Chiawelo, 1818
+Mobile: +27 79 450 3707 | Email: tsgsekgothe6969@gmail.com
+Linkedin: www.linkedin.com/in/tshegofatso-sekgothe-2a4608202
+GitHub: https://github.com/Guppy-coder
+________________________________________
+Objective
+Dedicated software engineering student with a passion for developing innovative solutions and continuously improving my skills. I am committed to leveraging my technical abilities and project experiences to make a meaningful impact in the field. Eager to take on new challenges, learn from industry professionals, and contribute to software development projects that drive real-world change.
+________________________________________
+Education
+WeThinkCode_(Higher Certificate (NQF 5) - Systems Development (Computer Software Engineering)) (09/2023 - 12/2024)
+●	Completed a 16-month course, focusing on foundational skills such as Python, SDLC, and TDD in the first year.
+●	Advanced learning in the second year included Java, OOP, software architecture, SQL, server-client interactions, DevOps, CI/CD, and full-stack web development.
+●	Specialized in Data Engineering as an elective at the end of second year with primarily focusing on designing, building, and maintaining the infrastructure and systems that allow organizations to collect, store, process, and analyze large volumes of data.
+
+Skills
+●	Programming Languages: Java, Python, JavaScript, SQL
+●	Web and Frameworks: HTML, CSS, Flask, Pandas, Javalin
+●	Tools and Platforms: Docker, GitLab CI/CD pipelines
+●	Methodologies: Agile methodologies
+●	Problem-Solving: Strong problem-solving skills
+●	Software: Microsoft Excel and Word
+●	Soft Skills: Teamwork, leadership, communication
+
+Projects
+Hackathons
+●	Melsoft Hackathon
+○	Developed a comprehensive tool to assess the math and literacy skills of high school students, enabling the creation of personalized study plans tailored to individual needs. Additionally, the tool evaluated students' personalities to suggest suitable career paths, providing a holistic approach to educational and career guidance.
+●	Ayoba Hackathon
+○	Designed and built a digital platform similar to Fiverr, aimed at empowering small informal businesses in South Africa. The platform connected service providers with potential clients, facilitating access to job opportunities and promoting entrepreneurship. The solution included features for user ratings, secure payments, and service listings, creating a user-friendly marketplace for the informal sector.
+●	First Lego League – Robotics
+2018
+○	Participated as a member of the robotics team in the First Lego League (FLL) competition, contributing to the design and programming of robotic solutions.
+________________________________________
+Volunteering
+WeThinkCode Bootcamp — Volunteer Boot Camp Assistant
+●	Assisted participants during the bootcamp, providing support with coding challenges, debugging, and project guidance. Helped foster a collaborative learning environment to encourage problem-solving and skill development.
+WeThinkCode_ — Volunteer Graduation Assistant
+●	Facilitated the successful execution of the graduation ceremony for the graduating cohort by managing logistics, including gown distribution and coordinating seating arrangements. Ensured the venue was appropriately set up to provide a seamless experience
