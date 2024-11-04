@@ -1,5 +1,19 @@
 import chromadb
 import openai
+import os
+import pprint
+import pandas as pd
+from transformers import pipeline
+
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("syedmharis/software-engineering-interview-questions-dataset")
+
+print("Path to dataset files:", path)
+
+
+
 
 chroma_client = chromadb.Client()
 
@@ -22,4 +36,6 @@ res = collection.query(
 # Extract the relevant document from the query results
 relevant_document = res['documents'][0]
 
-print(res)
+
+
+pprint(resp)
