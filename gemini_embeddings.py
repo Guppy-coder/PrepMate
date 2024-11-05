@@ -73,16 +73,16 @@ res = model.generate_content(behavioral_template)
 
 pprint.pprint(res)
 
-# questions = res.text.split("* **")
-# print(len(res))
-# questions = questions[0].split("\n")
-# print(len(questions))
+questions = res.text.split("* **")
+print(len(res))
+questions = questions[0].split("\n")
+print(len(questions))
 
-# pprint.pprint(questions)
+pprint.pprint(questions)
 
-# for ques in questions:
-#     if ques == "":
-#         continue
-#     print(ques)
-#     print()
-#     sleep(2)
+for ques in questions:
+    if ques == "":
+        continue
+    print(ques)
+    print()
+    sleep(2)
