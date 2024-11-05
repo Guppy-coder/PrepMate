@@ -4,6 +4,7 @@ import pprint
 from dotenv import load_dotenv
 import google.generativeai as genai
 from time import sleep
+import pandas as pd
 
 import kagglehub
 
@@ -20,12 +21,12 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 # initialize gemini client
 
 # Download latest version
-# path = kagglehub.dataset_download("syedmharis/software-engineering-interview-questions-dataset")
+path = kagglehub.dataset_download("syedmharis/software-engineering-interview-questions-dataset")
 
-# print("Path to dataset files:", path)
+print("Path to dataset files:", path)
 
-
-
+dataframe = pd.read_csv('Software Questions.csv')
+# retrive only questions of medium difficulty level from csv file
 
 chroma_client = chromadb.Client()
 
@@ -69,7 +70,10 @@ behavioral_template = """ I want you to act as an interviewer. Remember, you are
             Question: {question}
             Answer:"""
 
+
+
 res = model.generate_content(behavioral_template)
+
 
 pprint.pprint(res)
 
