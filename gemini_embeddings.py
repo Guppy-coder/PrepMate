@@ -12,6 +12,8 @@ path = kagglehub.dataset_download("syedmharis/software-engineering-interview-que
 
 print("Path to dataset files:", path)
 
+data_frame = pd.read_csv(path)
+
 
 
 
@@ -35,7 +37,3 @@ res = collection.query(
 
 # Extract the relevant document from the query results
 relevant_document = res['documents'][0]
-
-
-
-pprint(resp)
