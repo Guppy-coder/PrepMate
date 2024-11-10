@@ -1,0 +1,31 @@
+It sounds like you have a solid foundation with embeddings and a similarity search! To prompt the LLM to generate interview questions one at a time while retaining context, here’s an approach that may help:
+
+### 1. **Implement Conversation Memory**
+   - Use a short-term memory buffer to track the recent questions asked and responses given. For each new question prompt, include key points from prior interactions, like:
+     - Previous question(s) asked.
+     - Relevant information extracted from the response, especially if it aligns with resume data.
+   - Limit the memory to a manageable size (e.g., the last 2-3 interactions) to avoid overwhelming the LLM with context.
+
+### 2. **Structured Prompting with Contextual Updates**
+   - **Prompt Structure**: Design a prompt template that dynamically updates after each response. For example:
+     ```
+     "The candidate has skills in [skills extracted from the resume] and answered the previous question about [topic of last question]. Based on this, draft the next question to explore the candidate’s [new area of focus]."
+     ```
+   - **Update Context Iteratively**: After each question, append the candidate’s response to your memory buffer and adjust the prompt for the next question. Include relevant points based on the similarity search (e.g., notable projects or roles from the resume).
+
+### 3. **Leverage the Vector Database for Context-Driven Questioning**
+   - Use similarity search to suggest specific areas of focus based on the resume, allowing the LLM to generate contextually relevant questions. If a project from the resume is highly relevant to the conversation flow, include it in the prompt:
+     ```
+     "Based on the candidate's experience with [similar project or skill], draft a follow-up question that explores their role in more detail."
+     ```
+
+### 4. **Experiment with Few-Shot Prompting for Coherent Progression**
+   - If your LLM supports it, provide a few-shot prompt that outlines a sequence of questions to set the tone and logic of follow-ups. This helps maintain a natural progression:
+     ```
+     "Here are example questions based on similar resumes: [Sample Q&A sequence]. Now, given the candidate’s response about [specific skill/experience], draft the next question."
+     ```
+
+### 5. **Refine with Feedback and Adjustments**
+   - After each question-response cycle, use the candidate’s answer and resume details as feedback for refining the next question prompt. This could mean asking for clarification, diving into a related skill, or shifting focus based on new insights from the answer.
+
+These steps should help the LLM retain relevant context without losing track of the interview flow!
