@@ -4,9 +4,8 @@ from pinecone_plugins.assistant.models.chat import Message
 import tkinter as tk
 from tkinter import filedialog
 import functools
-
-
-# Upload a file.
+# import magic
+import docx2pdf
 
 
 # msg = Message(content="How many employees did Netflix have by the end of 2023?")
@@ -29,10 +28,12 @@ def get_input(prompt):
     
     return user_input.strip()
 
-def upload_file(assistant):
+def upload_CV(assistant):
     file_path = filedialog.askopenfilename()
     # Do something with the file path, like uploading it to a server or processing it locally
-    assistant.upload_file(file_path=upload_file(), timeout=None)
+    # if not is_pdf:
+    #     docx2pdf.convert("input.docx", "output.pdf")
+    assistant.upload_file(file_path=file_path, timeout=None)
     return file_path
 
 def get_assistant():
@@ -41,6 +42,10 @@ def get_assistant():
     )
 
     return assistant
+
+# def is_pdf(file_path):
+#     mime_type = magic.from_file(file_path, mime=True)
+#     return mime_type == 'application/pdf'
 
 def main():
 
@@ -54,16 +59,13 @@ def main():
         try:
             assistant = pc.assistant.create_assistant(
                 assistant_name= assistant_name + "-assistant", 
-                instructions="Answer directly and succinctly. Do not provide any additional information.", # Description or directive for the assistant to apply to all responses.
+                instructions="", # Description or directive for the assistant to apply to all responses.
                 timeout=30 # Wait 30 seconds for assistant operation to complete.
         )
         except Exception:
             print("Assistant already exists")
             is_assistant_created = True
 
-    # Get the assistant.
-    
-    print(assistant)
 
 if __name__ == "__main__":
     main()
@@ -73,9 +75,9 @@ root.title("File Uploader")
 
 assistant = get_assistant()
 
-upload_with_args = functools.partial(upload_file, assistant)
+upload_with_args = functools.partial(upload_CV, assistant)
 
-upload_button = tk.Button(root, text="Upload File", command=upload_file)
+upload_button = tk.Button(root, text="Upload File", command=upload_with_args)
 upload_button.pack()
 
 root.mainloop()
