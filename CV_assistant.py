@@ -6,6 +6,7 @@ from tkinter import filedialog
 import functools
 # import magic
 import docx2pdf
+from templates import behavioral_template
 
 
 # msg = Message(content="How many employees did Netflix have by the end of 2023?")
@@ -43,9 +44,15 @@ def get_assistant():
 
     return assistant
 
-# def is_pdf(file_path):
-#     mime_type = magic.from_file(file_path, mime=True)
-#     return mime_type == 'application/pdf'
+def query_assistant(msg):
+    assistant = get_assistant()
+    
+    msg = Message(content=msg)
+    resp = assistant.chat(messages=[msg])
+    print(resp['message']['content'])
+
+def create_assistant():
+    pass
 
 def main():
 
@@ -59,25 +66,27 @@ def main():
         try:
             assistant = pc.assistant.create_assistant(
                 assistant_name= assistant_name + "-assistant", 
-                instructions="", # Description or directive for the assistant to apply to all responses.
+                instructions="Only give me 10 wordsentence answers.", # Description or directive for the assistant to apply to all responses.
                 timeout=30 # Wait 30 seconds for assistant operation to complete.
         )
         except Exception:
             print("Assistant already exists")
             is_assistant_created = True
+    
+    query_assistant(get_input("what do you want to ask the assistant?: "))
 
 
 if __name__ == "__main__":
     main()
 
-root = tk.Tk()
-root.title("File Uploader")
+# root = tk.Tk()
+# root.title("File Uploader")
 
-assistant = get_assistant()
+# assistant = get_assistant()
 
-upload_with_args = functools.partial(upload_CV, assistant)
+# upload_with_args = functools.partial(upload_CV, assistant)
 
-upload_button = tk.Button(root, text="Upload File", command=upload_with_args)
-upload_button.pack()
+# upload_button = tk.Button(root, text="Upload File", command=upload_with_args)
+# upload_button.pack()
 
-root.mainloop()
+# root.mainloop()
